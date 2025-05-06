@@ -26,6 +26,37 @@
             border-radius: 12px;
             margin-bottom: 10px;
         }
+        .hidden {
+            display: none;
+        }
+        #previewImages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            position: relative;
+        }
+        .remove-image {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -39,311 +70,803 @@
                         <span class="text-xl font-bold text-gray-900">MarketPlace</span>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Inicio</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Explorar</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Favoritos</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Mensajes</a>
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showSection('home')">Inicio</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showSection('explore')">Explorar</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showSection('favorites')">Favoritos</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showSection('messages')">Mensajes</a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center" onclick="showSection('add-listing')">
                         <i class="fas fa-plus mr-2"></i> Publicar anuncio
                     </button>
                     <div class="ml-4 relative flex-shrink-0">
-                        <div class="rounded-full bg-gray-200 h-8 w-8 flex items-center justify-center cursor-pointer">
+                        <div id="userMenuButton" class="rounded-full bg-gray-200 h-8 w-8 flex items-center justify-center cursor-pointer">
                             <i class="fas fa-user text-gray-600"></i>
                         </div>
+                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="showSection('profile')">Mi perfil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="showSection('my-listings')">Mis anuncios</a>
+                            <div class="border-t border-gray-200"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="logout()">Cerrar sesión</a>
+                        </div>
+                    </div>
+                    <div id="loginButton" class="ml-4">
+                        <button class="text-indigo-600 hover:text-indigo-800 px-3 py-1 rounded-md text-sm font-medium" onclick="showSection('login')">
+                            Iniciar sesión
+                        </button>
                     </div>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" onclick="toggleMobileMenu()">
                         <span class="sr-only">Open main menu</span>
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
         </div>
+
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden sm:hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('home')">Inicio</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('explore')">Explorar</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('favorites')">Favoritos</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('messages')">Mensajes</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('add-listing')">Publicar anuncio</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('login')">Iniciar sesión</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('profile')">Mi perfil</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showSection('my-listings')">Mis anuncios</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="logout()">Cerrar sesión</a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Hero Section -->
-    <div class="gradient-bg text-white">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
-                <div class="mb-8 lg:mb-0">
-                    <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-4">
-                        Compra y vende lo que necesites
-                    </h1>
-                    <p class="text-xl text-indigo-100 max-w-3xl">
-                        La plataforma más sencilla para publicar tus anuncios clasificados. Encuentra oportunidades increíbles cerca de ti.
-                    </p>
-                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                        <button class="bg-white text-indigo-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center">
-                            <i class="fas fa-search mr-2"></i> Explorar anuncios
-                        </button>
-                        <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center border border-white">
-                            <i class="fas fa-plus mr-2"></i> Publicar gratis
-                        </button>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="bg-white rounded-xl shadow-xl p-6 text-gray-800">
-                        <h3 class="text-xl font-bold mb-4">Publica tu anuncio en 3 pasos</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
-                                    <span class="font-bold">1</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">Describe lo que ofreces</h4>
-                                    <p class="text-gray-600 text-sm">Título claro, descripción detallada y fotos de calidad.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
-                                    <span class="font-bold">2</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">Selecciona una categoría</h4>
-                                    <p class="text-gray-600 text-sm">Ayuda a los compradores a encontrar tu anuncio fácilmente.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
-                                    <span class="font-bold">3</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium">Publica y espera respuestas</h4>
-                                    <p class="text-gray-600 text-sm">Recibirás notificaciones cuando alguien esté interesado.</p>
-                                </div>
+    <!-- Main Content Sections -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Home Section -->
+        <div id="home" class="section">
+            <!-- Hero Section -->
+            <div class="gradient-bg text-white rounded-xl mb-8">
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+                        <div class="mb-8 lg:mb-0">
+                            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-4">
+                                Compra y vende lo que necesites
+                            </h1>
+                            <p class="text-xl text-indigo-100 max-w-3xl">
+                                La plataforma más sencilla para publicar tus anuncios clasificados. Encuentra oportunidades increíbles cerca de ti.
+                            </p>
+                            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                                <button class="bg-white text-indigo-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center" onclick="showSection('explore')">
+                                    <i class="fas fa-search mr-2"></i> Explorar anuncios
+                                </button>
+                                <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center border border-white" onclick="showSection('add-listing')">
+                                    <i class="fas fa-plus mr-2"></i> Publicar gratis
+                                </button>
                             </div>
                         </div>
-                        <button class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
-                            Comenzar ahora
-                        </button>
+                        <div class="relative">
+                            <div class="bg-white rounded-xl shadow-xl p-6 text-gray-800">
+                                <h3 class="text-xl font-bold mb-4">Publica tu anuncio en 3 pasos</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                            <span class="font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Describe lo que ofreces</h4>
+                                            <p class="text-gray-600 text-sm">Título claro, descripción detallada y fotos de calidad.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                            <span class="font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Selecciona una categoría</h4>
+                                            <p class="text-gray-600 text-sm">Ayuda a los compradores a encontrar tu anuncio fácilmente.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                            <span class="font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Publica y espera respuestas</h4>
+                                            <p class="text-gray-600 text-sm">Recibirás notificaciones cuando alguien esté interesado.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium" onclick="showSection('add-listing')">
+                                    Comenzar ahora
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Search Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-8">
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1">
-                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">¿Qué estás buscando?</label>
-                    <div class="relative">
-                        <input type="text" id="search" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12, bicicleta, apartamento...">
-                        <div class="absolute left-3 top-3 text-gray-400">
-                            <i class="fas fa-search"></i>
+            <!-- Search Section -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-8">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label for="search" class="block text-sm font-medium text-gray-700 mb-1">¿Qué estás buscando?</label>
+                            <div class="relative">
+                                <input type="text" id="search" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12, bicicleta, apartamento...">
+                                <div class="absolute left-3 top-3 text-gray-400">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
+                            <div class="relative">
+                                <input type="text" id="location" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o código postal">
+                                <div class="absolute left-3 top-3 text-gray-400">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+                            <select id="category" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Todas las categorías</option>
+                                <option value="vehicles">Vehículos</option>
+                                <option value="property">Inmuebles</option>
+                                <option value="electronics">Electrónica</option>
+                                <option value="fashion">Moda</option>
+                                <option value="sports">Deportes</option>
+                                <option value="services">Servicios</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium flex items-center h-12" onclick="searchListings()">
+                                <i class="fas fa-search mr-2"></i> Buscar
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="flex-1">
-                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
-                    <div class="relative">
-                        <input type="text" id="location" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o código postal">
-                        <div class="absolute left-3 top-3 text-gray-400">
-                            <i class="fas fa-map-marker-alt"></i>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Explora por categorías</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('vehicles')">
+                        <div class="category-icon bg-red-100 text-red-600 mx-auto">
+                            <i class="fas fa-car text-xl"></i>
                         </div>
+                        <h3 class="font-medium">Vehículos</h3>
+                        <p class="text-gray-500 text-sm mt-1">1,245 anuncios</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('property')">
+                        <div class="category-icon bg-blue-100 text-blue-600 mx-auto">
+                            <i class="fas fa-home text-xl"></i>
+                        </div>
+                        <h3 class="font-medium">Inmuebles</h3>
+                        <p class="text-gray-500 text-sm mt-1">876 anuncios</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('electronics')">
+                        <div class="category-icon bg-green-100 text-green-600 mx-auto">
+                            <i class="fas fa-mobile-alt text-xl"></i>
+                        </div>
+                        <h3 class="font-medium">Electrónica</h3>
+                        <p class="text-gray-500 text-sm mt-1">3,421 anuncios</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('fashion')">
+                        <div class="category-icon bg-purple-100 text-purple-600 mx-auto">
+                            <i class="fas fa-tshirt text-xl"></i>
+                        </div>
+                        <h3 class="font-medium">Moda</h3>
+                        <p class="text-gray-500 text-sm mt-1">2,156 anuncios</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('sports')">
+                        <div class="category-icon bg-yellow-100 text-yellow-600 mx-auto">
+                            <i class="fas fa-basketball-ball text-xl"></i>
+                        </div>
+                        <h3 class="font-medium">Deportes</h3>
+                        <p class="text-gray-500 text-sm mt-1">1,789 anuncios</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer" onclick="filterByCategory('services')">
+                        <div class="category-icon bg-pink-100 text-pink-600 mx-auto">
+                            <i class="fas fa-tools text-xl"></i>
+                        </div>
+                        <h3 class="font-medium">Servicios</h3>
+                        <p class="text-gray-500 text-sm mt-1">945 anuncios</p>
                     </div>
                 </div>
-                <div class="flex-1">
-                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-                    <select id="category" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">Todas las categorías</option>
-                        <option value="vehicles">Vehículos</option>
-                        <option value="property">Inmuebles</option>
-                        <option value="electronics">Electrónica</option>
-                        <option value="fashion">Moda</option>
-                        <option value="sports">Deportes</option>
-                        <option value="services">Servicios</option>
-                    </select>
+            </div>
+
+            <!-- Featured Listings -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900">Anuncios destacados</h2>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center" onclick="showSection('explore')">
+                        Ver todos <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
-                <div class="flex items-end">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium flex items-center h-12">
-                        <i class="fas fa-search mr-2"></i> Buscar
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="featuredListings">
+                    <!-- Listings will be loaded here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Cómo funciona?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-edit text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">1. Crea tu anuncio</h3>
+                        <p class="text-gray-600">Describe tu producto o servicio con detalles claros y añade fotos de calidad.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-share-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">2. Publica gratis</h3>
+                        <p class="text-gray-600">Tu anuncio será visible para miles de personas en tu área local.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-comments text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">3. Conecta con compradores</h3>
+                        <p class="text-gray-600">Recibe mensajes de interesados y negocia directamente con ellos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="gradient-bg text-white py-16 rounded-xl">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-3xl font-bold mb-6">¿Listo para vender algo?</h2>
+                    <p class="text-xl text-indigo-100 max-w-3xl mx-auto mb-8">
+                        Publica tu anuncio en minutos y comienza a recibir ofertas hoy mismo. Es completamente gratis.
+                    </p>
+                    <button class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-medium text-lg inline-flex items-center" onclick="showSection('add-listing')">
+                        <i class="fas fa-plus mr-2"></i> Publicar anuncio ahora
                     </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Categories Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Explora por categorías</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-red-100 text-red-600 mx-auto">
-                    <i class="fas fa-car text-xl"></i>
-                </div>
-                <h3 class="font-medium">Vehículos</h3>
-                <p class="text-gray-500 text-sm mt-1">1,245 anuncios</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-blue-100 text-blue-600 mx-auto">
-                    <i class="fas fa-home text-xl"></i>
-                </div>
-                <h3 class="font-medium">Inmuebles</h3>
-                <p class="text-gray-500 text-sm mt-1">876 anuncios</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-green-100 text-green-600 mx-auto">
-                    <i class="fas fa-mobile-alt text-xl"></i>
-                </div>
-                <h3 class="font-medium">Electrónica</h3>
-                <p class="text-gray-500 text-sm mt-1">3,421 anuncios</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-purple-100 text-purple-600 mx-auto">
-                    <i class="fas fa-tshirt text-xl"></i>
-                </div>
-                <h3 class="font-medium">Moda</h3>
-                <p class="text-gray-500 text-sm mt-1">2,156 anuncios</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-yellow-100 text-yellow-600 mx-auto">
-                    <i class="fas fa-basketball-ball text-xl"></i>
-                </div>
-                <h3 class="font-medium">Deportes</h3>
-                <p class="text-gray-500 text-sm mt-1">1,789 anuncios</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
-                <div class="category-icon bg-pink-100 text-pink-600 mx-auto">
-                    <i class="fas fa-tools text-xl"></i>
-                </div>
-                <h3 class="font-medium">Servicios</h3>
-                <p class="text-gray-500 text-sm mt-1">945 anuncios</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Featured Listings -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900">Anuncios destacados</h2>
-            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
-                Ver todos <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Listing 1 -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
-                <div class="relative pb-2/3 h-48">
-                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="iPhone 12 Pro">
-                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
-                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-bold text-lg">iPhone 12 Pro 128GB</h3>
-                            <p class="text-gray-600 text-sm">Electrónica • Madrid</p>
-                        </div>
-                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Nuevo</span>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center">
-                        <span class="font-bold text-gray-900">€650</span>
-                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
-                        </button>
-                    </div>
+        <!-- Explore Section -->
+        <div id="explore" class="section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Explorar anuncios</h2>
+                <div class="flex items-center">
+                    <span class="mr-2 text-gray-600">Ordenar por:</span>
+                    <select id="sortListings" class="border border-gray-300 rounded-lg px-3 py-1 focus:ring-indigo-500 focus:border-indigo-500" onchange="loadListings()">
+                        <option value="newest">Más recientes</option>
+                        <option value="oldest">Más antiguos</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                    </select>
                 </div>
             </div>
             
-            <!-- Listing 2 -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
-                <div class="relative pb-2/3 h-48">
-                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Harley Davidson">
-                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
-                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-bold text-lg">Harley Davidson 2020</h3>
-                            <p class="text-gray-600 text-sm">Vehículos • Barcelona</p>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="font-bold text-lg mb-4">Filtros</h3>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-medium mb-2">Categoría</h4>
+                            <select id="filterCategory" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500" onchange="loadListings()">
+                                <option value="">Todas las categorías</option>
+                                <option value="vehicles">Vehículos</option>
+                                <option value="property">Inmuebles</option>
+                                <option value="electronics">Electrónica</option>
+                                <option value="fashion">Moda</option>
+                                <option value="sports">Deportes</option>
+                                <option value="services">Servicios</option>
+                            </select>
                         </div>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Usado</span>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center">
-                        <span class="font-bold text-gray-900">€12,500</span>
-                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-medium mb-2">Ubicación</h4>
+                            <input type="text" id="filterLocation" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o código postal" onchange="loadListings()">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-medium mb-2">Precio</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <input type="number" id="minPrice" placeholder="Mínimo" class="w-24 border border-gray-300 rounded-lg px-3 py-1 focus:ring-indigo-500 focus:border-indigo-500" onchange="loadListings()">
+                                <span class="mx-2">-</span>
+                                <input type="number" id="maxPrice" placeholder="Máximo" class="w-24 border border-gray-300 rounded-lg px-3 py-1 focus:ring-indigo-500 focus:border-indigo-500" onchange="loadListings()">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-medium mb-2">Condición</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="condition-new" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" onchange="loadListings()">
+                                    <label for="condition-new" class="ml-2 text-sm text-gray-700">Nuevo</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="condition-used" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" onchange="loadListings()">
+                                    <label for="condition-used" class="ml-2 text-sm text-gray-700">Usado</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium" onclick="resetFilters()">
+                            Limpiar filtros
                         </button>
                     </div>
+                </div>
+                
+                <div class="lg:col-span-3">
+                    <div id="listingsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                        <!-- Listings will be loaded here by JavaScript -->
+                    </div>
+                    
+                    <div class="mt-8 flex justify-center">
+                        <nav class="inline-flex rounded-md shadow">
+                            <button id="prevPage" class="px-3 py-1 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50" onclick="changePage(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div id="pageNumbers" class="flex">
+                                <!-- Page numbers will be added here by JavaScript -->
+                            </div>
+                            <button id="nextPage" class="px-3 py-1 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50" onclick="changePage(1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listing Detail Section -->
+        <div id="listing-detail" class="section hidden">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <button class="mb-4 text-indigo-600 hover:text-indigo-800 font-medium flex items-center" onclick="showSection('explore')">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a los anuncios
+                </button>
+                
+                <div id="listingDetailContent">
+                    <!-- Listing detail will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Listing Section -->
+        <div id="add-listing" class="section hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Publicar nuevo anuncio</h2>
+                
+                <form id="listingForm" onsubmit="submitListing(event)">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Título del anuncio*</label>
+                            <input type="text" id="listingTitle" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12 Pro 128GB en perfecto estado" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción*</label>
+                            <textarea id="listingDescription" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Describe detalladamente lo que ofreces, incluyendo características, condición, etc." required></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoría*</label>
+                                <select id="listingCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="vehicles">Vehículos</option>
+                                    <option value="property">Inmuebles</option>
+                                    <option value="electronics">Electrónica</option>
+                                    <option value="fashion">Moda</option>
+                                    <option value="sports">Deportes</option>
+                                    <option value="services">Servicios</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Precio*</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500">€</span>
+                                    </div>
+                                    <input type="number" id="listingPrice" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="0.00" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación*</label>
+                                <input type="text" id="listingLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o dirección" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Condición</label>
+                                <select id="listingCondition" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="new">Nuevo</option>
+                                    <option value="used">Usado</option>
+                                    <option value="refurbished">Reacondicionado</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fotos (máx. 8)*</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                <div class="space-y-1 text-center">
+                                    <div class="flex text-sm text-gray-600">
+                                        <label for="listingImages" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                            <span>Sube fotos</span>
+                                            <input id="listingImages" type="file" class="sr-only" multiple accept="image/*" onchange="previewImages(event)">
+                                        </label>
+                                        <p class="pl-1">o arrastra y suelta</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                                </div>
+                            </div>
+                            <div id="previewImages" class="mt-4"></div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input id="listingTerms" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" required>
+                            <label for="listingTerms" class="ml-2 block text-sm text-gray-700">
+                                Acepto los <a href="#" class="text-indigo-600 hover:text-indigo-500">Términos de servicio</a> y la <a href="#" class="text-indigo-600 hover:text-indigo-500">Política de privacidad</a>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end space-x-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" onclick="showSection('home')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium">
+                            Publicar anuncio
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login" class="section hidden max-w-md mx-auto">
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Iniciar sesión</h2>
+                <p class="text-gray-600 mb-8">Ingresa tus credenciales para acceder a tu cuenta</p>
+                
+                <form id="loginForm" onsubmit="login(event)">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                            <input type="email" id="loginEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div>
+                            <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                            <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="rememberMe" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                <label for="rememberMe" class="ml-2 block text-sm text-gray-700">
+                                    Recordarme
+                                </label>
+                            </div>
+                            
+                            <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">O inicia sesión con</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="fab fa-google text-red-500 mr-2"></i> Google
+                        </button>
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="fab fa-facebook-f text-blue-600 mr-2"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        ¿No tienes una cuenta? 
+                        <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium" onclick="showSection('register')">Regístrate</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Section -->
+        <div id="register" class="section hidden max-w-md mx-auto">
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Crear cuenta</h2>
+                <p class="text-gray-600 mb-8">Regístrate para comenzar a publicar anuncios</p>
+                
+                <form id="registerForm" onsubmit="register(event)">
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="registerFirstName" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                <input type="text" id="registerFirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Tu nombre" required>
+                            </div>
+                            
+                            <div>
+                                <label for="registerLastName" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+                                <input type="text" id="registerLastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Tu apellido" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                            <input type="email" id="registerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div>
+                            <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                            <input type="password" id="registerPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div>
+                            <label for="registerConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmar contraseña</label>
+                            <input type="password" id="registerConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input id="registerTerms" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" required>
+                            <label for="registerTerms" class="ml-2 block text-sm text-gray-700">
+                                Acepto los <a href="#" class="text-indigo-600 hover:text-indigo-500">Términos de servicio</a> y la <a href="#" class="text-indigo-600 hover:text-indigo-500">Política de privacidad</a>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
+                            Crear cuenta
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">O regístrate con</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="fab fa-google text-red-500 mr-2"></i> Google
+                        </button>
+                        <button class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="fab fa-facebook-f text-blue-600 mr-2"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        ¿Ya tienes una cuenta? 
+                        <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium" onclick="showSection('login')">Iniciar sesión</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="section hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Mi perfil</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1">
+                        <div class="text-center">
+                            <div class="mx-auto h-32 w-32 rounded-full bg-gray-200 flex items-center justify-center mb-4 overflow-hidden">
+                                <img id="profileImage" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile" class="h-full w-full object-cover">
+                            </div>
+                            
+                            <h3 id="profileName" class="text-xl font-bold text-gray-900">Juan Pérez</h3>
+                            <p id="profileEmail" class="text-gray-600">juan.perez@email.com</p>
+                            
+                            <div class="mt-4">
+                                <label for="uploadProfileImage" class="cursor-pointer text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-center">
+                                    <i class="fas fa-camera mr-2"></i> Cambiar foto
+                                </label>
+                                <input type="file" id="uploadProfileImage" class="hidden" accept="image/*" onchange="updateProfileImage(event)">
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-medium text-gray-900 mb-2">Información de contacto</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <i class="fas fa-phone-alt text-gray-400 mr-2"></i>
+                                    <span id="profilePhone" class="text-gray-600">+34 612 345 678</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+                                    <span id="profileLocation" class="text-gray-600">Madrid, España</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2">
+                        <form id="profileForm" onsubmit="updateProfile(event)">
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="profileFirstName" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                        <input type="text" id="profileFirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" value="Juan" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="profileLastName" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+                                        <input type="text" id="profileLastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" value="Pérez" required>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="profileEmailInput" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                                    <input type="email" id="profileEmailInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" value="juan.perez@email.com" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="profilePhoneInput" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                                    <input type="tel" id="profilePhoneInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" value="+34 612 345 678">
+                                </div>
+                                
+                                <div>
+                                    <label for="profileLocationInput" class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
+                                    <input type="text" id="profileLocationInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" value="Madrid, España">
+                                </div>
+                                
+                                <div>
+                                    <label for="profileBio" class="block text-sm font-medium text-gray-700 mb-1">Acerca de mí</label>
+                                    <textarea id="profileBio" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">Soy un vendedor confiable con más de 5 años de experiencia en MarketPlace.</textarea>
+                                </div>
+                                
+                                <div class="pt-4 border-t border-gray-200">
+                                    <h4 class="font-medium text-gray-900 mb-2">Cambiar contraseña</h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Contraseña actual</label>
+                                            <input type="password" id="currentPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••">
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">Nueva contraseña</label>
+                                            <input type="password" id="newPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••">
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="confirmNewPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmar nueva contraseña</label>
+                                            <input type="password" id="confirmNewPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="••••••••">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 flex justify-end">
+                                <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium">
+                                    Guardar cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Listings Section -->
+        <div id="my-listings" class="section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Mis anuncios</h2>
+                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center" onclick="showSection('add-listing')">
+                    <i class="fas fa-plus mr-2"></i> Nuevo anuncio
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6" id="myListingsContainer">
+                    <!-- User's listings will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites Section -->
+        <div id="favorites" class="section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Favoritos</h2>
+                <div class="text-gray-600">
+                    <span id="favoritesCount">3</span> anuncios guardados
                 </div>
             </div>
             
-            <!-- Listing 3 -->
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
-                <div class="relative pb-2/3 h-48">
-                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Apartamento">
-                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
-                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
-                    </div>
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6" id="favoritesContainer">
+                    <!-- Favorite listings will be loaded here by JavaScript -->
                 </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-bold text-lg">Apartamento en centro</h3>
-                            <p class="text-gray-600 text-sm">Inmuebles • Valencia</p>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div id="messages" class="section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Mensajes</h2>
+                <div class="text-gray-600">
+                    <span id="unreadMessagesCount">2</span> sin leer
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-4">
+                    <div class="lg:col-span-1 border-r border-gray-200">
+                        <div class="p-4 border-b border-gray-200">
+                            <div class="relative">
+                                <input type="text" placeholder="Buscar conversaciones" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                <div class="absolute left-3 top-2.5 text-gray-400">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Nuevo</span>
+                        
+                        <div class="overflow-y-auto" style="max-height: 600px;">
+                            <div id="conversationsList">
+                                <!-- Conversations will be loaded here by JavaScript -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 flex justify-between items-center">
-                        <span class="font-bold text-gray-900">€1,200/mes</span>
-                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
-                        </button>
+                    
+                    <div class="lg:col-span-3">
+                        <div id="messageContainer" class="flex flex-col" style="height: 600px;">
+                            <div class="p-4 border-b border-gray-200 flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <img id="messageUserImage" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" class="h-full w-full object-cover">
+                                </div>
+                                <div class="ml-3">
+                                    <h3 id="messageUserName" class="font-medium">María García</h3>
+                                    <p class="text-sm text-gray-500">Activo ahora</p>
+                                </div>
+                            </div>
+                            
+                            <div id="messagesContent" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+                                <!-- Messages will be loaded here by JavaScript -->
+                            </div>
+                            
+                            <div class="p-4 border-t border-gray-200">
+                                <form id="sendMessageForm" class="flex items-center" onsubmit="sendMessage(event)">
+                                    <input type="text" id="messageInput" placeholder="Escribe un mensaje..." class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-r-lg">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- How It Works -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Cómo funciona?</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-edit text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">1. Crea tu anuncio</h3>
-                <p class="text-gray-600">Describe tu producto o servicio con detalles claros y añade fotos de calidad.</p>
-            </div>
-            <div class="text-center">
-                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-share-alt text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">2. Publica gratis</h3>
-                <p class="text-gray-600">Tu anuncio será visible para miles de personas en tu área local.</p>
-            </div>
-            <div class="text-center">
-                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-comments text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">3. Conecta con compradores</h3>
-                <p class="text-gray-600">Recibe mensajes de interesados y negocia directamente con ellos.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="gradient-bg text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-6">¿Listo para vender algo?</h2>
-            <p class="text-xl text-indigo-100 max-w-3xl mx-auto mb-8">
-                Publica tu anuncio en minutos y comienza a recibir ofertas hoy mismo. Es completamente gratis.
-            </p>
-            <button class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-medium text-lg inline-flex items-center">
-                <i class="fas fa-plus mr-2"></i> Publicar anuncio ahora
-            </button>
-        </div>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-12 pb-8">
@@ -413,109 +936,174 @@
         </div>
     </footer>
 
-    <!-- Add Listing Modal (hidden by default) -->
-    <div id="addListingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Publicar nuevo anuncio</h3>
-                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Título del anuncio*</label>
-                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12 Pro 128GB en perfecto estado">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción*</label>
-                            <textarea rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Describe detalladamente lo que ofreces, incluyendo características, condición, etc."></textarea>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoría*</label>
-                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option value="">Selecciona una categoría</option>
-                                    <option value="vehicles">Vehículos</option>
-                                    <option value="property">Inmuebles</option>
-                                    <option value="electronics">Electrónica</option>
-                                    <option value="fashion">Moda</option>
-                                    <option value="sports">Deportes</option>
-                                    <option value="services">Servicios</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Precio*</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500">€</span>
-                                    </div>
-                                    <input type="text" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="0.00">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación*</label>
-                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o dirección">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Fotos (máx. 8)</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                                <div class="space-y-1 text-center">
-                                    <div class="flex text-sm text-gray-600">
-                                        <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
-                                            <span>Sube fotos</span>
-                                            <input type="file" class="sr-only" multiple>
-                                        </label>
-                                        <p class="pl-1">o arrastra y suelta</p>
-                                    </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <input id="terms" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                            <label for="terms" class="ml-2 block text-sm text-gray-700">
-                                Acepto los <a href="#" class="text-indigo-600 hover:text-indigo-500">Términos de servicio</a> y la <a href="#" class="text-indigo-600 hover:text-indigo-500">Política de privacidad</a>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Publicar anuncio
-                    </button>
-                    <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Modal functions
-        function openModal() {
-            document.getElementById('addListingModal').classList.remove('hidden');
-        }
-        
-        function closeModal() {
-            document.getElementById('addListingModal').classList.add('hidden');
-        }
-        
-        // Add event listeners to all "Publicar anuncio" buttons
+        // App State
+        const state = {
+            currentUser: null,
+            listings: [],
+            favorites: [],
+            conversations: [],
+            currentPage: 'home',
+            listingsPage: 1,
+            listingsPerPage: 8,
+            selectedListing: null,
+            selectedConversation: null,
+            listingImages: []
+        };
+
+        // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
-            const publishButtons = document.querySelectorAll('[onclick="openModal()"], button:contains("Publicar")');
-            publishButtons.forEach(button => {
-                button.addEventListener('click', openModal);
-            });
+            // Check if user is logged in (for demo purposes)
+            checkLoginStatus();
+            
+            // Load sample data
+            loadSampleData();
+            
+            // Load featured listings
+            loadFeaturedListings();
+            
+            // Load listings for explore section
+            loadListings();
+            
+            // Load user's listings if logged in
+            if (state.currentUser) {
+                loadMyListings();
+                loadFavorites();
+                loadConversations();
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
         });
-    </script>
-</body>
+
+        // Check login status (demo purposes)
+        function checkLoginStatus() {
+            // For demo, we'll just check localStorage
+            const user = localStorage.getItem('marketplace_user');
+            if (user) {
+                state.currentUser = JSON.parse(user);
+                document.getElementById('loginButton').classList.add('hidden');
+                document.getElementById('userMenuButton').classList.remove('hidden');
+            } else {
+                document.getElementById('loginButton').classList.remove('hidden');
+                document.getElementById('userMenuButton').classList.add('hidden');
+            }
+        }
+
+        // Load sample data
+        function loadSampleData() {
+            state.listings = [
+                {
+                    id: 1,
+                    title: 'iPhone 12 Pro 128GB',
+                    description: 'iPhone 12 Pro en perfecto estado, con 128GB de almacenamiento. Incluye cargador original y funda de regalo. Comprado en enero de 2021, con garantía hasta enero de 2023.',
+                    price: 650,
+                    category: 'electronics',
+                    location: 'Madrid',
+                    condition: 'used',
+                    images: [
+                        'https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1603921326210-6edd2d60ca68?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1603921326230-9824b1ffe0c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 2,
+                    userName: 'María García',
+                    userImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-15',
+                    isFavorite: false
+                },
+                {
+                    id: 2,
+                    title: 'Harley Davidson 2020',
+                    description: 'Harley Davidson Sportster 2020 con solo 5,000 km. Mantenimiento al día, sin accidentes. Incluye casco y chaqueta de cuero. Precio negociable para compradores serios.',
+                    price: 12500,
+                    category: 'vehicles',
+                    location: 'Barcelona',
+                    condition: 'used',
+                    images: [
+                        'https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1558981852-4b761e1d7d1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 3,
+                    userName: 'Carlos López',
+                    userImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-10',
+                    isFavorite: true
+                },
+                {
+                    id: 3,
+                    title: 'Apartamento en centro',
+                    description: 'Apartamento completamente amueblado en el centro de la ciudad. 2 habitaciones, 1 baño, cocina equipada y sala de estar. Ideal para estudiantes o profesionales. No se admiten mascotas.',
+                    price: 1200,
+                    category: 'property',
+                    location: 'Valencia',
+                    condition: 'new',
+                    images: [
+                        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 4,
+                    userName: 'Ana Martínez',
+                    userImage: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-20',
+                    isFavorite: false
+                },
+                {
+                    id: 4,
+                    title: 'Zapatillas deportivas Nike',
+                    description: 'Zapatillas Nike Air Max 270, talla 42, color negro. Nuevas sin estrenar, con caja original. Perfectas para running o uso casual.',
+                    price: 90,
+                    category: 'fashion',
+                    location: 'Sevilla',
+                    condition: 'new',
+                    images: [
+                        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1600269452121-1f7d5e7b3b1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 5,
+                    userName: 'David Sánchez',
+                    userImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-18',
+                    isFavorite: true
+                },
+                {
+                    id: 5,
+                    title: 'Bicicleta de montaña',
+                    description: 'Bicicleta de montaña Trek Marlin 5, talla M, casi nueva. Solo usada 3 veces. Cambios Shimano, frenos de disco hidráulicos. Ideal para senderos y montaña.',
+                    price: 450,
+                    category: 'sports',
+                    location: 'Bilbao',
+                    condition: 'used',
+                    images: [
+                        'https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1507035895480-2a1f5d574518?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 6,
+                    userName: 'Laura Fernández',
+                    userImage: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-12',
+                    isFavorite: false
+                },
+                {
+                    id: 6,
+                    title: 'Servicio de diseño gráfico',
+                    description: 'Diseñador gráfico profesional con más de 5 años de experiencia. Ofrezco servicios de diseño de logos, branding, folletos, banners y más. Presupuesto según proyecto.',
+                    price: 50,
+                    category: 'services',
+                    location: 'Málaga',
+                    condition: 'new',
+                    images: [
+                        'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                    ],
+                    userId: 7,
+                    userName: 'Pablo Gómez',
+                    userImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80',
+                    createdAt: '2023-05-22',
+                    isFavorite: false
+                },
+                {
+                    id: 7,
+                    title: 'Sofá de piel negro
 </html>
