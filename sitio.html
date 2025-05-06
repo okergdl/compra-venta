@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketPlace - Anuncios Clasificados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6b21ff 0%, #3b82f6 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-store text-indigo-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">MarketPlace</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Inicio</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Explorar</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Favoritos</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Mensajes</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Publicar anuncio
+                    </button>
+                    <div class="ml-4 relative flex-shrink-0">
+                        <div class="rounded-full bg-gray-200 h-8 w-8 flex items-center justify-center cursor-pointer">
+                            <i class="fas fa-user text-gray-600"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+                <div class="mb-8 lg:mb-0">
+                    <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-4">
+                        Compra y vende lo que necesites
+                    </h1>
+                    <p class="text-xl text-indigo-100 max-w-3xl">
+                        La plataforma más sencilla para publicar tus anuncios clasificados. Encuentra oportunidades increíbles cerca de ti.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                        <button class="bg-white text-indigo-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center">
+                            <i class="fas fa-search mr-2"></i> Explorar anuncios
+                        </button>
+                        <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium text-lg flex items-center justify-center border border-white">
+                            <i class="fas fa-plus mr-2"></i> Publicar gratis
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="bg-white rounded-xl shadow-xl p-6 text-gray-800">
+                        <h3 class="text-xl font-bold mb-4">Publica tu anuncio en 3 pasos</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                    <span class="font-bold">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">Describe lo que ofreces</h4>
+                                    <p class="text-gray-600 text-sm">Título claro, descripción detallada y fotos de calidad.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                    <span class="font-bold">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">Selecciona una categoría</h4>
+                                    <p class="text-gray-600 text-sm">Ayuda a los compradores a encontrar tu anuncio fácilmente.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 text-indigo-600 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0 mt-1 mr-3">
+                                    <span class="font-bold">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium">Publica y espera respuestas</h4>
+                                    <p class="text-gray-600 text-sm">Recibirás notificaciones cuando alguien esté interesado.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
+                            Comenzar ahora
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">¿Qué estás buscando?</label>
+                    <div class="relative">
+                        <input type="text" id="search" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12, bicicleta, apartamento...">
+                        <div class="absolute left-3 top-3 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
+                    <div class="relative">
+                        <input type="text" id="location" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o código postal">
+                        <div class="absolute left-3 top-3 text-gray-400">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+                    <select id="category" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Todas las categorías</option>
+                        <option value="vehicles">Vehículos</option>
+                        <option value="property">Inmuebles</option>
+                        <option value="electronics">Electrónica</option>
+                        <option value="fashion">Moda</option>
+                        <option value="sports">Deportes</option>
+                        <option value="services">Servicios</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium flex items-center h-12">
+                        <i class="fas fa-search mr-2"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Explora por categorías</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-red-100 text-red-600 mx-auto">
+                    <i class="fas fa-car text-xl"></i>
+                </div>
+                <h3 class="font-medium">Vehículos</h3>
+                <p class="text-gray-500 text-sm mt-1">1,245 anuncios</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-blue-100 text-blue-600 mx-auto">
+                    <i class="fas fa-home text-xl"></i>
+                </div>
+                <h3 class="font-medium">Inmuebles</h3>
+                <p class="text-gray-500 text-sm mt-1">876 anuncios</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-green-100 text-green-600 mx-auto">
+                    <i class="fas fa-mobile-alt text-xl"></i>
+                </div>
+                <h3 class="font-medium">Electrónica</h3>
+                <p class="text-gray-500 text-sm mt-1">3,421 anuncios</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-purple-100 text-purple-600 mx-auto">
+                    <i class="fas fa-tshirt text-xl"></i>
+                </div>
+                <h3 class="font-medium">Moda</h3>
+                <p class="text-gray-500 text-sm mt-1">2,156 anuncios</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-yellow-100 text-yellow-600 mx-auto">
+                    <i class="fas fa-basketball-ball text-xl"></i>
+                </div>
+                <h3 class="font-medium">Deportes</h3>
+                <p class="text-gray-500 text-sm mt-1">1,789 anuncios</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all cursor-pointer">
+                <div class="category-icon bg-pink-100 text-pink-600 mx-auto">
+                    <i class="fas fa-tools text-xl"></i>
+                </div>
+                <h3 class="font-medium">Servicios</h3>
+                <p class="text-gray-500 text-sm mt-1">945 anuncios</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Listings -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50 rounded-xl">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Anuncios destacados</h2>
+            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                Ver todos <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Listing 1 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
+                <div class="relative pb-2/3 h-48">
+                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="iPhone 12 Pro">
+                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
+                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">iPhone 12 Pro 128GB</h3>
+                            <p class="text-gray-600 text-sm">Electrónica • Madrid</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Nuevo</span>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-gray-900">€650</span>
+                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
+                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Listing 2 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
+                <div class="relative pb-2/3 h-48">
+                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Harley Davidson">
+                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
+                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Harley Davidson 2020</h3>
+                            <p class="text-gray-600 text-sm">Vehículos • Barcelona</p>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Usado</span>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-gray-900">€12,500</span>
+                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
+                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Listing 3 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden transition-all card-hover">
+                <div class="relative pb-2/3 h-48">
+                    <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Apartamento">
+                    <div class="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md">
+                        <i class="far fa-heart text-gray-400 hover:text-red-500 cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Apartamento en centro</h3>
+                            <p class="text-gray-600 text-sm">Inmuebles • Valencia</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Nuevo</span>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-gray-900">€1,200/mes</span>
+                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
+                            Ver detalles <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Cómo funciona?</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-edit text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">1. Crea tu anuncio</h3>
+                <p class="text-gray-600">Describe tu producto o servicio con detalles claros y añade fotos de calidad.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-share-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">2. Publica gratis</h3>
+                <p class="text-gray-600">Tu anuncio será visible para miles de personas en tu área local.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-comments text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">3. Conecta con compradores</h3>
+                <p class="text-gray-600">Recibe mensajes de interesados y negocia directamente con ellos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="gradient-bg text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">¿Listo para vender algo?</h2>
+            <p class="text-xl text-indigo-100 max-w-3xl mx-auto mb-8">
+                Publica tu anuncio en minutos y comienza a recibir ofertas hoy mismo. Es completamente gratis.
+            </p>
+            <button class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-medium text-lg inline-flex items-center">
+                <i class="fas fa-plus mr-2"></i> Publicar anuncio ahora
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-medium mb-4">MarketPlace</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Acerca de</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Carreras</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Prensa</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Ayuda</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Centro de ayuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Seguridad</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Normas de la comunidad</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contáctanos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de privacidad</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Términos de servicio</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Descarga la app</h3>
+                    <div class="space-y-4">
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center w-full">
+                            <i class="fab fa-apple text-2xl mr-3"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Descarga en</div>
+                                <div class="font-medium">App Store</div>
+                            </div>
+                        </button>
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center w-full">
+                            <i class="fab fa-google-play text-2xl mr-3"></i>
+                            <div class="text-left">
+                                <div class="text-xs">Disponible en</div>
+                                <div class="font-medium">Google Play</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-store text-indigo-400 text-2xl mr-2"></i>
+                    <span class="text-xl font-bold">MarketPlace</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="mt-4 md:mt-0 text-gray-400 text-sm">
+                    © 2023 MarketPlace. Todos los derechos reservados.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Listing Modal (hidden by default) -->
+    <div id="addListingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Publicar nuevo anuncio</h3>
+                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Título del anuncio*</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ejemplo: iPhone 12 Pro 128GB en perfecto estado">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción*</label>
+                            <textarea rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Describe detalladamente lo que ofreces, incluyendo características, condición, etc."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoría*</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="vehicles">Vehículos</option>
+                                    <option value="property">Inmuebles</option>
+                                    <option value="electronics">Electrónica</option>
+                                    <option value="fashion">Moda</option>
+                                    <option value="sports">Deportes</option>
+                                    <option value="services">Servicios</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Precio*</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500">€</span>
+                                    </div>
+                                    <input type="text" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación*</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ciudad o dirección">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fotos (máx. 8)</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                <div class="space-y-1 text-center">
+                                    <div class="flex text-sm text-gray-600">
+                                        <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                            <span>Sube fotos</span>
+                                            <input type="file" class="sr-only" multiple>
+                                        </label>
+                                        <p class="pl-1">o arrastra y suelta</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="terms" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="terms" class="ml-2 block text-sm text-gray-700">
+                                Acepto los <a href="#" class="text-indigo-600 hover:text-indigo-500">Términos de servicio</a> y la <a href="#" class="text-indigo-600 hover:text-indigo-500">Política de privacidad</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Publicar anuncio
+                    </button>
+                    <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function openModal() {
+            document.getElementById('addListingModal').classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            document.getElementById('addListingModal').classList.add('hidden');
+        }
+        
+        // Add event listeners to all "Publicar anuncio" buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const publishButtons = document.querySelectorAll('[onclick="openModal()"], button:contains("Publicar")');
+            publishButtons.forEach(button => {
+                button.addEventListener('click', openModal);
+            });
+        });
+    </script>
+</body>
+</html>
